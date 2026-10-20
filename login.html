@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorkMate – Entrar ou criar conta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070b14;
+    --bg-2: #0c1220;
+    --text: #f1f5fb;
+    --muted: #a9b4c7;
+    --blue: #2b7fff;
+    --blue-2: #1a6cff;
+    --line: rgba(255,255,255,.16);
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text); line-height: 1.6;
+    background:
+      linear-gradient(180deg, rgba(7,11,20,.92), rgba(7,11,20,.8) 50%, var(--bg) 100%),
+      url("hero.png") center / cover fixed no-repeat,
+      var(--bg);
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  /* ---------- Topo ---------- */
+  .top { max-width: 1200px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+  .logo svg { width: 36px; height: 36px; }
+  .logo span { color: var(--blue); }
+  .back { color: var(--muted); font-size: .9rem; transition: color .2s; }
+  .back:hover { color: var(--blue); }
+
+  /* ---------- Cards ---------- */
+  main { padding: 16px 24px 64px; display: flex; justify-content: center; }
+  .card {
+    width: 100%; max-width: 540px; padding: 32px;
+    background: rgba(12,18,32,.88); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.08); border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  }
+  .card h1 { font-size: 1.7rem; letter-spacing: -.02em; line-height: 1.2; margin: 0 0 6px; }
+  .card .sub { color: var(--muted); font-size: .95rem; margin: 0 0 24px; }
+
+  /* Abas */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 28px; background: #080d19; border: 1px solid var(--line); border-radius: var(--radius); }
+  .tab {
+    font: inherit; font-weight: 500; font-size: .95rem; cursor: pointer;
+    padding: 10px; border: 0; border-radius: 9px; background: transparent; color: var(--muted);
+    transition: background .2s, color .2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { background: var(--blue-2); color: #fff; }
+
+  /* Formulário */
+  form { display: grid; gap: 18px; }
+  form[hidden] { display: none; }
+  .field { display: grid; gap: 6px; }
+  .field > label, .field > .label { font-size: .85rem; font-weight: 500; color: var(--muted); }
+  input, textarea, select {
+    font: inherit; color: var(--text); background: #0a1020;
+    border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; width: 100%;
+    transition: border-color .2s;
+  }
+  input::placeholder, textarea::placeholder { color: #5f6b82; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--blue); }
+  textarea { min-height: 130px; resize: vertical; }
+  select { appearance: none; cursor: pointer; padding-right: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23a9b4c7' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center; }
+  option { background: #0a1020; }
+
+  /* Linha de adicionar (linguagem + nível / idioma) */
+  .adder { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; }
+  .adder.single { grid-template-columns: 1fr auto; }
+  .adder select { width: 150px; }
+  .btn {
+    font: inherit; font-weight: 500; font-size: .95rem; cursor: pointer;
+    padding: 12px 22px; border-radius: var(--radius); border: 1px solid var(--line);
+    background: transparent; color: var(--text);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .15s, background .2s, border-color .2s;
+  }
+  .btn:hover { border-color: var(--blue); }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: linear-gradient(180deg, #3a8bff, var(--blue-2)); border-color: transparent; box-shadow: 0 8px 24px rgba(43,127,255,.3); width: 100%; padding: 14px; }
+  .btn-primary:hover { background: linear-gradient(180deg, #4d98ff, #2275ff); border-color: transparent; }
+  .btn-add { padding: 12px 16px; }
+
+  /* Listas adicionadas */
+  .items { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .items:empty { display: none; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 8px 6px 12px; border-radius: 999px; font-size: .85rem;
+    background: rgba(43,127,255,.12); border: 1px solid rgba(43,127,255,.35);
+  }
+  .chip button {
+    font: inherit; line-height: 1; cursor: pointer; width: 22px; height: 22px; border-radius: 50%;
+    border: 0; background: rgba(255,255,255,.08); color: var(--muted);
+  }
+  .chip button:hover { background: rgba(255,107,107,.25); color: #ff6b6b; }
+
+  @media (max-width: 560px) {
+    .card { padding: 24px 18px; }
+    .adder, .adder.single { grid-template-columns: 1fr; }
+    .adder select { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="logo" aria-label="WorkMate – voltar ao início">
+    <svg viewBox="0 0 36 36" fill="none" stroke="#2b7fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 9 3 18l8 9M25 9l8 9-8 9M21 6l-6 24"/>
+    </svg>
+    Work<span>Mate</span>
+  </a>
+  <a href="index.html" class="back">← Voltar ao início</a>
+</header>
+
+<main>
+  <section class="card" aria-labelledby="titulo">
+    <h1 id="titulo">Acesse sua conta</h1>
+    <p class="sub">Entre ou crie sua conta para encontrar seu próximo parceiro de código.</p>
+
+    <div class="tabs" role="tablist" aria-label="Acesso">
+      <button class="tab" role="tab" data-tab="login" id="tab-login" aria-controls="form-login" aria-selected="true" type="button">Entrar</button>
+      <button class="tab" role="tab" data-tab="registro" id="tab-registro" aria-controls="form-registro" aria-selected="false" type="button">Registrar-se</button>
+    </div>
+
+    <!-- ===== LOGIN ===== -->
+    <form id="form-login" role="tabpanel" aria-labelledby="tab-login">
+      <div class="field">
+        <label for="login-email">E-mail</label>
+        <input id="login-email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="login-senha">Senha</label>
+        <input id="login-senha" name="senha" type="password" placeholder="Sua senha" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+
+    <!-- ===== REGISTRO ===== -->
+    <form id="form-registro" role="tabpanel" aria-labelledby="tab-registro" hidden>
+      <div class="field">
+        <label for="reg-nome">Nome completo</label>
+        <input id="reg-nome" name="nome" type="text" placeholder="Ex.: Maria da Silva" autocomplete="name" required>
+      </div>
+
+      <div class="field">
+        <label for="reg-github">Link do GitHub</label>
+        <input id="reg-github" name="github" type="url" pattern="https?://(www\.)?github\.com/[\w.\-]+/?" title="Ex.: https://github.com/seu-usuario" placeholder="https://github.com/seu-usuario" required>
+      </div>
+
+      <div class="field">
+        <label for="reg-email">E-mail</label>
+        <input id="reg-email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label for="reg-senha">Senha</label>
+        <input id="reg-senha" name="senha" type="password" placeholder="Mínimo de 8 caracteres" autocomplete="new-password" minlength="8" required>
+      </div>
+
+      <div class="field">
+        <label for="lang-nome">Linguagens de programação</label>
+        <div class="adder">
+          <input id="lang-nome" list="lista-linguagens" placeholder="Ex.: Python" autocomplete="off">
+          <select id="lang-nivel" aria-label="Nível de conhecimento">
+            <option value="Básico">Básico</option>
+            <option value="Intermediário">Intermediário</option>
+            <option value="Avançado">Avançado</option>
+          </select>
+          <button type="button" class="btn btn-add" id="lang-add">Adicionar</button>
+        </div>
+        <datalist id="lista-linguagens">
+          <option value="JavaScript"><option value="TypeScript"><option value="Python"><option value="Java">
+          <option value="C#"><option value="C++"><option value="C"><option value="PHP"><option value="Go">
+          <option value="Rust"><option value="Kotlin"><option value="Swift"><option value="Ruby"><option value="SQL">
+        </datalist>
+        <ul class="items" id="lang-lista" aria-live="polite"></ul>
+        
+      </div>
+
+      <div class="field">
+        <label for="idioma-nome">Línguas faladas</label>
+        <div class="adder single">
+          <input id="idioma-nome" list="lista-idiomas" placeholder="Ex.: Português" autocomplete="off">
+          <button type="button" class="btn btn-add" id="idioma-add">Adicionar</button>
+        </div>
+        <datalist id="lista-idiomas">
+          <option value="Português"><option value="Inglês"><option value="Espanhol"><option value="Francês">
+          <option value="Alemão"><option value="Italiano"><option value="Japonês"><option value="Mandarim">
+        </datalist>
+        <ul class="items" id="idioma-lista" aria-live="polite"></ul>
+      </div>
+
+      <div class="field">
+        <label for="reg-bio">Bio</label>
+        <textarea id="reg-bio" name="bio" placeholder="Apresente-se: o que você gosta de construir, o que busca em um parceiro, seus objetivos..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Criar conta</button>
+    </form>
+  </section>
+</main>
+
+<script src="registro.js"></script>
+</body>
+</html>

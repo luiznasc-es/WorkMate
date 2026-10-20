@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorkMate – Encontre seu próximo parceiro de código</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070b14;
+    --bg-2: #0c1220;
+    --text: #f1f5fb;
+    --muted: #a9b4c7;
+    --blue: #2b7fff;
+    --blue-2: #1a6cff;
+    --line: rgba(255,255,255,.16);
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    margin: 0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 10;
+    background: rgba(7,11,20,.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .nav {
+    max-width: 1200px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+  .logo svg { width: 36px; height: 36px; }
+  .logo span { color: var(--blue); }
+  .menu { display: flex; align-items: center; gap: 36px; }
+  .menu a.link { font-size: .9rem; color: var(--muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+  .menu a.link:hover, .menu a.link.active { color: var(--blue); border-color: var(--blue); }
+
+  /* ---------- Botões ---------- */
+  .btn {
+    font: inherit; font-weight: 500; font-size: .95rem; cursor: pointer;
+    padding: 12px 26px; border-radius: var(--radius);
+    border: 1px solid var(--line); background: transparent; color: var(--text);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform .15s, background .2s, border-color .2s;
+  }
+  .btn:hover { border-color: var(--blue); }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: linear-gradient(180deg, #3a8bff, var(--blue-2)); border-color: transparent; box-shadow: 0 8px 24px rgba(43,127,255,.3); }
+  .btn-primary:hover { background: linear-gradient(180deg, #4d98ff, #2275ff); border-color: transparent; }
+  .btn-entrar { padding: 10px 40px; border-radius: 14px; }
+
+  /* ---------- Inicio ---------- */
+  #inicio {
+    min-height: 100vh; padding: 120px 24px 72px;
+    display: flex; align-items: center;
+    background:
+      linear-gradient(90deg, var(--bg) 0%, var(--bg) 30%, rgba(7,11,20,.88) 42%, rgba(7,11,20,.35) 62%, rgba(7,11,20,0) 85%),
+      linear-gradient(180deg, rgba(7,11,20,.7) 0%, rgba(7,11,20,0) 22%, rgba(7,11,20,0) 78%, var(--bg-2) 100%),
+      url("coffe.png") right center / cover no-repeat,
+      var(--bg);
+    overflow: hidden;
+  }
+  .coffe {
+    max-width: 1200px; margin: 0 auto; width: 100%;
+    display: block;
+  }
+  .kicker { color: var(--muted); font-size: .8rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 22px; }
+  h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.12; letter-spacing: -.03em; margin: 0 0 24px; font-weight: 700; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .coffe > div { max-width: 540px; }
+  .lead { color: #d5dcea; max-width: 44ch; margin: 0 0 32px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 16px; }
+
+  /* ---------- Sobre ---------- */
+  #sobre { padding: 110px 24px; background: var(--bg-2); }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h2 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); letter-spacing: -.02em; line-height: 1.2; margin: 0 0 16px; }
+  .section-lead { color: var(--muted); max-width: 60ch; margin: 0 0 48px; }
+  .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  .about-grid h3 { margin: 0 0 8px; font-size: 1.1rem; color: var(--blue); }
+  .about-grid p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .about-grid > div { border-top: 1px solid var(--line); padding-top: 20px; }
+
+  /* ---------- Contato (footer) ---------- */
+  #contato { padding: 90px 24px 40px; background: #050810; border-top: 1px solid rgba(255,255,255,.06); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .contact-info p { color: var(--muted); max-width: 38ch; margin: 0 0 24px; }
+  .contact-info ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .contact-info a { color: var(--text); border-bottom: 1px solid var(--line); }
+  .contact-info a:hover { border-color: var(--blue); }
+  form { display: grid; gap: 14px; }
+  label { font-size: .85rem; color: var(--muted); display: grid; gap: 6px; }
+  input, textarea {
+    font: inherit; color: var(--text); background: #0c1220;
+    border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--blue); }
+  textarea { min-height: 110px; resize: vertical; }
+  form .btn { justify-self: start; }
+  .copy { max-width: 1000px; margin: 64px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08); color: var(--muted); font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    #inicio {
+      background:
+        linear-gradient(180deg, rgba(7,11,20,.88) 0%, rgba(7,11,20,.72) 60%, var(--bg-2) 100%),
+        url("coffe.png") 70% center / cover no-repeat,
+        var(--bg);
+    }
+  }
+  @media (max-width: 640px) {
+    .menu { gap: 16px; }
+    .menu a.link { font-size: .82rem; }
+    .btn-entrar { padding: 8px 18px; }
+    .logo { font-size: 1.2rem; }
+    .logo svg { width: 28px; height: 28px; }
+  }
+  @media (max-width: 480px) { .menu a.link { display: none; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Principal">
+    <a href="#inicio" class="logo" aria-label="WorkMate – início">
+      <svg viewBox="0 0 36 36" fill="none" stroke="#2b7fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M11 9 3 18l8 9M25 9l8 9-8 9M21 6l-6 24"/>
+      </svg>
+      Work<span>Mate</span>
+    </a>
+    <div class="menu">
+      <a href="#inicio" class="link active">Início</a>
+      <a href="#sobre" class="link">Sobre</a>
+      <a href="#contato" class="link">Contato</a>
+      <button type="button" class="btn btn-entrar js-entrar">Entrar</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- INÍCIO -->
+  <section id="inicio">
+    <div class="coffe">
+      <div>
+        <p class="kicker">Programe · Colabore · Evolua</p>
+        <h1>Encontre seu próximo <em>parceiro</em> de código.</h1>
+        <p class="lead">O WorkMate conecta programadores que querem colaborar, trocar ideias e construir projetos incríveis juntos.</p>
+        <div class="cta">
+          <button type="button" class="btn btn-primary js-entrar">Começar agora <span aria-hidden="true">→</span></button>
+          <a href="#sobre" class="btn">Saiba mais</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="container">
+      <h2>Código é melhor em equipe</h2>
+      <p class="section-lead">O WorkMate nasceu para aproximar pessoas que programam. Seja para um projeto pessoal, um estudo ou uma ideia de startup, você encontra alguém com quem construir. Perfeito para quem já atua a tempo na área ou para quem está começando e gostaria de conhecer pessoas novas que possam ajudar nesse processo.</p>
+      <div class="about-grid">
+        <div>
+          <h3>Conecte-se</h3>
+          <p>Encontre programadores com interesses, linguagens e objetivos parecidos com os seus.</p>
+        </div>
+        <div>
+          <h3>Colabore</h3>
+          <p>Troque ideias, divida tarefas e avance nos projetos junto com quem entende do assunto.</p>
+        </div>
+        <div>
+          <h3>Evolua</h3>
+          <p>Aprenda com outras pessoas, ganhe experiência real e cresça como desenvolvedor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- CONTATO (último item / rodapé) -->
+<footer id="contato">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <h2>Contato</h2>
+      <p>Tem dúvidas, sugestões ou quer falar com a gente? Envie uma mensagem.</p>
+      <ul>
+        <li><a href="mailto:contato@workmate.com">contato@workmate.com</a></li>
+      </ul>
+    </div>
+    <!-- Ajuste o action/lógica de envio quando definir o back-end -->
+    <form action="#" method="post" onsubmit="event.preventDefault();">
+      <label>Nome <input type="text" name="nome" autocomplete="name" required></label>
+      <label>E-mail <input type="email" name="email" autocomplete="email" required></label>
+      <label>Mensagem <textarea name="mensagem" required></textarea></label>
+      <button type="submit" class="btn btn-primary">Enviar mensagem</button>
+    </form>
+  </div>
+  <div class="copy">
+    <span>© 2026 WorkMate. Todos os direitos reservados.</span>
+    <span>Better Code Together</span>
+  </div>
+</footer>
+
+<script>
+  /* Entrar e "Começar agora" compartilham a mesma função (classe .js-entrar).
+     Quando a página de login/registro existir, basta ajustar o caminho abaixo. */
+  const PAGINA_LOGIN = "login.html";
+
+  function irParaLogin() {
+    // TODO: implementar fluxo de login/registro
+    window.location.href = PAGINA_LOGIN;
+  }
+
+  document.querySelectorAll(".js-entrar").forEach(function (btn) {
+    btn.addEventListener("click", irParaLogin);
+  });
+
+  /* Destaca o item do menu da seção visível */
+  const links = document.querySelectorAll(".menu a.link");
+  const secoes = ["inicio", "sobre", "contato"].map(function (id) { return document.getElementById(id); });
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        links.forEach(function (a) {
+          a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  secoes.forEach(function (s) { observer.observe(s); });
+</script>
+</body>
+</html>
